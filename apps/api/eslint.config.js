@@ -16,6 +16,9 @@ module.exports = [
       },
       sourceType: 'script',
     },
+    plugins: {
+      prettier: prettier,
+    },
     rules: {
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
       'no-unused-vars': [
@@ -117,12 +120,6 @@ module.exports = [
 
   // Ignore patterns
   {
-    ignores: [
-      'eslint.config.js',
-      '.eslintrc.js',
-      'dist/**',
-      'node_modules/**',
-      'coverage/**',
-    ],
+    ignores: ['eslint.config.js', '.eslintrc.js', 'dist/**', 'node_modules/**', 'coverage/**'],
   },
 ];

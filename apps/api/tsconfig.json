@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -12,16 +13,10 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "ignoreDeprecations": "6.0",
     "strictNullChecks": false,
     "forceConsistentCasingInFileNames": false,
     "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@app/common": ["libs/common/src"],
-      "@app/common/*": ["libs/common/src/*"],
-      "@app/core": ["libs/core/src"],
-      "@app/core/*": ["libs/core/src/*"]
-    }
-  }
+    "noFallthroughCasesInSwitch": false
+  },
+  "references": [{ "path": "../../libs/common" }, { "path": "../../libs/core" }]
 }
