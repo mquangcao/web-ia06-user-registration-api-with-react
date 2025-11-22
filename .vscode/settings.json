@@ -1,0 +1,12 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "liveServer.settings.root": "/apps/web/dist",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Use conventional commit message format. Less than 72 characters, usng Conventional Commits: https://www.conventionalcommits.org/en/v1.0.0/"
+    },
+    {
+      "text": "Pattern: <type>(<project(web-api)>-<scope>): <subject>"
+    }
+  ]
+}
