@@ -1,10 +1,7 @@
-import { Controller, Get, Head } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Head } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Head()
   healthHead() {}
 }
