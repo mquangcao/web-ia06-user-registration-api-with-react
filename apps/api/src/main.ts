@@ -1,3 +1,4 @@
+import { setupBootstrap } from '@app/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
@@ -12,6 +13,10 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
-  await app.listen(process.env.PORT ?? 3000);
+
+  await setupBootstrap(app, {
+    listenPort: 3008,
+    swaggerPath: 'docs',
+  });
 }
 bootstrap();

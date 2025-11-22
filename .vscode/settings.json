@@ -20,10 +20,10 @@
   ],
   "javascript.preferences.importModuleSpecifier": "shortest",
   "prettier.requireConfig": true,
+  "prettier.singleQuote": true,
   "search.exclude": {
     "package-lock.json": true
   },
-  "files.eol": "\n",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.preferences.importModuleSpecifier": "shortest",
   "typescript.preferences.preferTypeOnlyAutoImports": true,
