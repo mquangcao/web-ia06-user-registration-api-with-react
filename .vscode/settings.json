@@ -35,5 +35,12 @@
     {
       "text": "Pattern: <type>(<project | web |api>-<scope>): <subject>"
     }
-  ]
+  ],
+  "markdownlint.config": {
+    "MD041": false,
+    "MD033": false,
+    "MD053": false,
+    "MD047": false,
+    "MD014": false
+  }
 }
