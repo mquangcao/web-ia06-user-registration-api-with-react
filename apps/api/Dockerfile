@@ -39,6 +39,7 @@ RUN npm run build -- --filter=api...
 
 # Debug: List built files
 RUN ls -la apps/api/dist || echo "dist folder not found"
+RUN ls -la apps/api/dist/src || echo "dist/src folder not found"
 
 FROM base AS runner
 WORKDIR /app
@@ -58,4 +59,4 @@ RUN ls -la /app/apps/api/dist || echo "dist not found in runner"
 
 WORKDIR /app/apps/api
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
