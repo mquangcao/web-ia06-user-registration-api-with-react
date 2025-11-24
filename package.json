@@ -8,6 +8,9 @@
     "format:fix": "prettier --write .",
     "check-types": "turbo run check-types"
   },
+  "dependencies": {
+    "@types/node": "^20.11.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
