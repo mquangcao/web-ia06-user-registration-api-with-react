@@ -1,6 +1,7 @@
+# ------------------------------
+# Base image
+# ------------------------------
 FROM node:18-alpine AS base
-# Base image không cần pnpm
-# Chỉ giữ nguyên environment clean
 RUN apk add --no-cache libc6-compat
 RUN apk update
 
@@ -22,52 +23,43 @@ RUN turbo prune web --docker
 
 
 # ------------------------------
-# Installer stage (install deps)
+# Installer stage
 # ------------------------------
 FROM base AS installer
 WORKDIR /app
 
-# Copy workspace metadata from prune
+# Copy metadata của workspace
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ ./
 
-# IMPORTANT: dùng lockfile của npm
-COPY --from=builder /app/out/package-lock.json ./package-lock.json
-COPY --from=builder /app/out/package.json ./package.json
+# Copy file root để npm install
+COPY package.json ./package.json
+COPY package-lock.json ./package-lock.json
 
-# Install (production only)
+# Cài dependencies
 RUN npm install --omit=dev
 
-# Copy full source for web
+# Copy source đã prune
 COPY --from=builder /app/out/full/ ./
 COPY turbo.json turbo.json
 
-# Environment variable for API host
-ENV NEXT_PUBLIC_API_HOST=$NEXT_PUBLIC_API_HOST
+# Build React/Vite app
+ENV VITE_API_HOST=$VITE_API_HOST
 
-# Build Next.js app
 RUN npx turbo build --filter=web...
 
 
 # ------------------------------
-# Runner stage
+# Runner stage (serve static files)
 # ------------------------------
-FROM base AS runner
-WORKDIR /app
+FROM nginx:alpine AS runner
 
-# Security: non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
+# Copy build output từ Vite
+COPY --from=installer /app/apps/web/dist /usr/share/nginx/html
 
-# Copy needed runtime files
-COPY --from=installer /app/apps/web/next.config.js .
-COPY --from=installer /app/apps/web/package.json .
+# Nếu cần chỉnh nginx.conf thì thêm ở đây
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-# Use Next.js standalone output (smaller image)
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+EXPOSE 80
 
-# Final command
-CMD ["node", "apps/web/server.js"]
+CMD ["nginx", "-g", "daemon off;"]

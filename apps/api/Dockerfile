@@ -33,8 +33,11 @@ WORKDIR /app
 # Copy workspace metadata từ turbo prune
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ ./
-COPY --from=builder /app/out/package-lock.json ./package-lock.json
-COPY --from=builder /app/out/package.json ./package.json
+
+
+# Dùng root package.json và package-lock.json
+COPY package.json ./package.json
+COPY package-lock.json ./package-lock.json
 
 # Cài dependencies
 RUN npm install --omit=dev
