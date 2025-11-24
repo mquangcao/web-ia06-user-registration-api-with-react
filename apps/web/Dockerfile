@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 # React + Vite Dockerfile
 
 FROM base AS builder
@@ -21,7 +21,7 @@ WORKDIR /app
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/package-lock.json ./package-lock.json
-RUN npm ci
+RUN npm install --legacy-peer-deps
 
 # Build the project
 COPY --from=builder /app/out/full/ .
