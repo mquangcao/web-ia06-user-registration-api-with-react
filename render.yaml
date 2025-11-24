@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: turborepo-backend
+    runtime: docker
+    repo: https://github.com/mquangcao/web-ia06-user-registration-api-with-react
+    buildFilter:
+      paths:
+        - apps/api/**
+    plan: free
+    dockerContext: .
+    dockerfilePath: ./apps/api/Dockerfile
+
+  - type: web
+    name: turborepo-frontend
+    runtime: docker
+    repo: https://github.com/mquangcao/web-ia06-user-registration-api-with-react
+    buildFilter:
+      paths:
+        - apps/web/**
+    plan: free
+    dockerContext: .
+    dockerfilePath: ./apps/web/Dockerfile
+version: '1'
