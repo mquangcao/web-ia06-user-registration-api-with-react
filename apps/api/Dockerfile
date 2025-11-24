@@ -1,66 +1,54 @@
-# ------------------------------
-# Base image
-# ------------------------------
 FROM node:18-alpine AS base
+# NestJS API Dockerfile
 
+FROM base AS builder
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 RUN apk update
-
-
-# ------------------------------
-# Builder stage
-# ------------------------------
-FROM base AS builder
+# Set working directory
 WORKDIR /app
-
 RUN npm install -g turbo
-
 COPY . .
-
 RUN turbo prune api --docker
 
-
-# ------------------------------
-# Installer stage
-# ------------------------------
+# Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
 WORKDIR /app
 
+# First install dependencies (as they change less often)
 COPY .gitignore .gitignore
-COPY --from=builder /app/out/json/ ./
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/package-lock.json ./package-lock.json
+RUN npm ci
 
-# Root package files
-COPY package.json ./package.json
-COPY package-lock.json ./package-lock.json
-
-# tsconfig gốc (prune không copy)
-COPY tsconfig*.json ./
-
-# Install deps
-RUN npm install --omit=dev
-
-# Add global tools for building libs/*
-RUN npm install -g typescript
-RUN npm install -g @types/node
-
-# Copy pruned source
-COPY --from=builder /app/out/full/ ./
+# Build the project and its dependencies
+COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-# Build API
-RUN npx turbo build --filter=api...
+# Uncomment and use build args to enable remote caching
+# ARG TURBO_TEAM
+# ENV TURBO_TEAM=$TURBO_TEAM
 
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
 
-# ------------------------------
-# Runner stage
-# ------------------------------
+RUN npm run build -- --filter=api...
+
 FROM base AS runner
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 appgroup
-RUN adduser --system --uid 1001 appuser
-USER appuser
+# Don't run production as root
+RUN addgroup --system --gid 1001 nestjs
+RUN adduser --system --uid 1001 nestjs
+USER nestjs
 
-COPY --from=installer /app ./
+# Copy only necessary files for production
+COPY --from=installer /app/apps/api/dist ./apps/api/dist
+COPY --from=installer /app/apps/api/package.json ./apps/api/package.json
+COPY --from=installer /app/node_modules ./node_modules
+COPY --from=installer /app/libs ./libs
+COPY --from=installer /app/package.json ./package.json
 
-CMD ["node", "apps/api/dist/main.js"]
+CMD node apps/api/dist/main.js

@@ -1,65 +1,59 @@
-# ------------------------------
-# Base image
-# ------------------------------
 FROM node:18-alpine AS base
+# React + Vite Dockerfile
+
+FROM base AS builder
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 RUN apk update
-
-
-# ------------------------------
-# Builder stage
-# ------------------------------
-FROM base AS builder
+# Set working directory
 WORKDIR /app
-
-# Install turbo globally
 RUN npm install -g turbo
-
-# Copy full repo
 COPY . .
-
-# Prune workspace for web
 RUN turbo prune web --docker
 
-
-# ------------------------------
-# Installer stage
-# ------------------------------
+# Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
 WORKDIR /app
 
-# Copy metadata của workspace
+# First install the dependencies (as they change less often)
 COPY .gitignore .gitignore
-COPY --from=builder /app/out/json/ ./
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/package-lock.json ./package-lock.json
+RUN npm ci
 
-# Copy file root để npm install
-COPY package.json ./package.json
-COPY package-lock.json ./package-lock.json
-
-# Cài dependencies
-RUN npm install --omit=dev
-
-# Copy source đã prune
-COPY --from=builder /app/out/full/ ./
+# Build the project
+COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-# Build React/Vite app
-ENV VITE_API_HOST=$VITE_API_HOST
+# Uncomment and use build args to enable remote caching
+# ARG TURBO_TEAM
+# ENV TURBO_TEAM=$TURBO_TEAM
 
-RUN npx turbo build --filter=web...
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
 
+# Build args for Vite environment variables
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
-# ------------------------------
-# Runner stage (serve static files)
-# ------------------------------
-FROM nginx:alpine AS runner
+RUN npm run build -- --filter=web...
 
-# Copy build output từ Vite
-COPY --from=installer /app/apps/web/dist /usr/share/nginx/html
+FROM base AS runner
+WORKDIR /app
 
-# Nếu cần chỉnh nginx.conf thì thêm ở đây
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Install serve to serve static files
+RUN npm install -g serve
 
-EXPOSE 80
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 reactapp
+USER reactapp
 
-CMD ["nginx", "-g", "daemon off;"]
+# Copy built assets from installer stage
+COPY --from=installer /app/apps/web/dist ./dist
+
+EXPOSE 3000
+
+CMD ["serve", "-s", "dist", "-l", "3000"]
