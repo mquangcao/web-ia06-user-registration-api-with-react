@@ -1,1 +1,1 @@
-prettier --check "apps/**/src/**/*.ts" "libs/**/src/**/*.ts"
+prettier --write "apps/**/src/**/*.ts" "libs/**/src/**/*.ts"

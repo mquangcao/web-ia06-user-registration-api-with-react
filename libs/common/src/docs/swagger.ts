@@ -15,9 +15,9 @@ export const setupSwagger = (
   options: SetupSwaggerOptions = {},
 ) => {
   const configBuilder = new DocumentBuilder()
-    .setTitle(options.swaggerTitle ?? `${appName} Documentation Swagger`)
-    .setDescription(options.swaggerDescription ?? `${appName} Description`)
-    .setVersion(options.swaggerVersion ?? '1.0')
+    .setTitle(options.swaggerTitle)
+    .setDescription(options.swaggerDescription)
+    .setVersion(options.swaggerVersion)
     .addServer('/', 'Local machine')
     .addBearerAuth()
     .addGlobalParameters({
@@ -33,7 +33,7 @@ export const setupSwagger = (
   }
   const config = configBuilder.build();
 
-  const swaggerPath = options.swaggerPath ?? `/api/${appName}/docs`;
+  const swaggerPath = options.swaggerPath;
 
   const swaggerFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(swaggerPath, app, swaggerFactory, {

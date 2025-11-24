@@ -28,13 +28,13 @@ export async function setupBootstrap(
 
   logger.verbose(`Current UTC Timezone: ${timeZone}: ${d}`);
 
-  const appName = 'appName';
-
+  const appName = getConfig<string>('appName');
+  const swaggerPath = options.swaggerPath ?? `/api/${appName}/docs`;
   setupSwagger(app, appName, serverUrls, {
-    swaggerTitle: options.swaggerTitle,
-    swaggerDescription: options.swaggerDescription,
-    swaggerVersion: options.swaggerVersion,
-    swaggerPath: options.swaggerPath,
+    swaggerTitle: options.swaggerTitle ?? `${appName} Documentation Swagger`,
+    swaggerDescription: options.swaggerDescription ?? `${appName} Description`,
+    swaggerVersion: options.swaggerVersion ?? '1.0',
+    swaggerPath,
   });
 
   const port = options.listenPort ?? getConfig<number>('port');
@@ -46,7 +46,7 @@ export async function setupBootstrap(
       [
         `=====================`,
         `Application is running on: ${url}`,
-        `Api document on: ${url}${options.swaggerPath}`,
+        `Api document on: ${url}${swaggerPath}`,
         `=====================`,
       ].join('\n'),
     );

@@ -14,9 +14,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await setupBootstrap(app, {
-    listenPort: 3008,
-    swaggerPath: 'docs',
-  });
+  await setupBootstrap(app);
 }
 bootstrap();
