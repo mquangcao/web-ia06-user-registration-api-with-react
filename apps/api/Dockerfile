@@ -3,66 +3,63 @@
 # ------------------------------
 FROM node:18-alpine AS base
 
-# ------------------------------
-# Builder: chạy turbo prune cho api
-# ------------------------------
-FROM base AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk update
 
+# ------------------------------
+# Builder stage
+# ------------------------------
+FROM base AS builder
 WORKDIR /app
 
-# Cài turbo cho build
+# Install turbo globally
 RUN npm install -g turbo
 
 COPY . .
 
-# Tạo bản prune để build Docker nhanh hơn
+# Prune workspace for API build
 RUN turbo prune api --docker
 
 
 # ------------------------------
-# Installer: cài thư viện bằng npm
+# Installer stage
 # ------------------------------
 FROM base AS installer
-RUN apk add --no-cache libc6-compat
-RUN apk update
-
 WORKDIR /app
 
-# Copy workspace metadata từ turbo prune
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ ./
 
-
-# Dùng root package.json và package-lock.json
+# Copy root package.json + lockfile (vì prune không tạo ra file này)
 COPY package.json ./package.json
 COPY package-lock.json ./package-lock.json
 
-# Cài dependencies
+# Install dependencies (prod only)
 RUN npm install --omit=dev
 
-# Copy toàn bộ source đã prune
+#❗ IMPORTANT FIX — add TypeScript for building libs/*
+RUN npm install -g typescript
+
+# Copy pruned source
 COPY --from=builder /app/out/full/ ./
 COPY turbo.json turbo.json
 
-# Build API workspace
+# Build API workspace (now tsc is available)
 RUN npx turbo build --filter=api...
 
 
 # ------------------------------
-# Runner: chạy API
+# Runner stage
 # ------------------------------
 FROM base AS runner
-
 WORKDIR /app
 
-# Tạo user không phải root
+# Create non-root user
 RUN addgroup --system --gid 1001 appgroup
 RUN adduser --system --uid 1001 appuser
 USER appuser
 
-# Copy output đã built
+# Copy built output
 COPY --from=installer /app ./
 
-CMD ["node", "apps/api/dist/index.js"]
+CMD ["node", "apps/api/dist/main.js"]
