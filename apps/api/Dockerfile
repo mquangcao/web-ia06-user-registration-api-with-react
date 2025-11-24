@@ -43,13 +43,13 @@ WORKDIR /app
 # Don't run production as root
 RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
+
+# Copy all necessary files for production
+COPY --from=installer --chown=nestjs:nestjs /app/apps/api/dist ./dist
+COPY --from=installer --chown=nestjs:nestjs /app/apps/api/package.json ./package.json
+COPY --from=installer --chown=nestjs:nestjs /app/node_modules ./node_modules
+COPY --from=installer --chown=nestjs:nestjs /app/libs ./libs
+
 USER nestjs
 
-# Copy only necessary files for production
-COPY --from=installer /app/apps/api/dist ./apps/api/dist
-COPY --from=installer /app/apps/api/package.json ./apps/api/package.json
-COPY --from=installer /app/node_modules ./node_modules
-COPY --from=installer /app/libs ./libs
-COPY --from=installer /app/package.json ./package.json
-
-CMD node apps/api/dist/main.js
+CMD ["node", "dist/main.js"]
