@@ -37,6 +37,9 @@ COPY tsconfig.json tsconfig.json
 
 RUN npm run build -- --filter=api...
 
+# Debug: List built files
+RUN ls -la apps/api/dist || echo "dist folder not found"
+
 FROM base AS runner
 WORKDIR /app
 
@@ -45,11 +48,14 @@ RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
 
 # Copy all necessary files for production
-COPY --from=installer --chown=nestjs:nestjs /app/apps/api/dist ./dist
-COPY --from=installer --chown=nestjs:nestjs /app/apps/api/package.json ./package.json
-COPY --from=installer --chown=nestjs:nestjs /app/node_modules ./node_modules
-COPY --from=installer --chown=nestjs:nestjs /app/libs ./libs
+COPY --from=installer --chown=nestjs:nestjs /app /app
 
 USER nestjs
+
+# Debug: Check what files exist
+RUN ls -la /app/apps/api/ || echo "api folder check"
+RUN ls -la /app/apps/api/dist || echo "dist not found in runner"
+
+WORKDIR /app/apps/api
 
 CMD ["node", "dist/main.js"]
