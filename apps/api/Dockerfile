@@ -33,7 +33,7 @@ COPY --from=builder /app/out/json/ ./
 # Copy root package.json + lockfile (vì prune không tạo ra file này)
 COPY package.json ./package.json
 COPY package-lock.json ./package-lock.json
-
+COPY tsconfig.json ./tsconfig.json
 # Install dependencies (prod only)
 RUN npm install --omit=dev
 
