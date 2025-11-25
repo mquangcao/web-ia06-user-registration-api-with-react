@@ -1,5 +1,7 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "files": [],
+  "extends": "@app/typescript-config/react.json",
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "compilerOptions": {
     "baseUrl": ".",

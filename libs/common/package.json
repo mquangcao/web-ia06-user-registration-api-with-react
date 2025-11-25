@@ -25,6 +25,7 @@
     "config": "^4.1.1"
   },
   "devDependencies": {
+    "@app/typescript-config": "^1.0.0",
     "@types/config": "^3.3.5",
     "typescript": "^5.9.3"
   }

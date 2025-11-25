@@ -26,20 +26,8 @@ RUN npm install --legacy-peer-deps
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-COPY tsconfig.json tsconfig.json
-
-# Uncomment and use build args to enable remote caching
-# ARG TURBO_TEAM
-# ENV TURBO_TEAM=$TURBO_TEAM
-
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
 
 RUN npm run build -- --filter=api...
-
-# Debug: List built files
-RUN ls -la apps/api/dist || echo "dist folder not found"
-RUN ls -la apps/api/dist/src || echo "dist/src folder not found"
 
 FROM base AS runner
 WORKDIR /app
@@ -52,10 +40,6 @@ RUN adduser --system --uid 1001 nestjs
 COPY --from=installer --chown=nestjs:nestjs /app /app
 
 USER nestjs
-
-# Debug: Check what files exist
-RUN ls -la /app/apps/api/ || echo "api folder check"
-RUN ls -la /app/apps/api/dist || echo "dist not found in runner"
 
 WORKDIR /app/apps/api
 

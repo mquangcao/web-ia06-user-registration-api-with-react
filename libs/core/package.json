@@ -22,6 +22,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@app/typescript-config": "^1.0.0",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@app/common": "^1.0.0"
   }
 }

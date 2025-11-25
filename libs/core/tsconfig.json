@@ -1,25 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@app/typescript-config/nest-library.json",
   "compilerOptions": {
-    "declaration": true,
     "outDir": "dist",
-    "rootDir": "src",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "useDefineForClassFields": false,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "incremental": true,
-    "skipLibCheck": true,
-    "composite": true,
-    "paths": {
-      "@app/common": ["../common/src"],
-      "@app/common/*": ["..common/src/*"]
-    }
+    "rootDir": "src"
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "../common" }]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

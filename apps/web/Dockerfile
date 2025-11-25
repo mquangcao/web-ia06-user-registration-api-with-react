@@ -26,7 +26,6 @@ RUN npm install --legacy-peer-deps
 # Build the project
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-COPY tsconfig.json tsconfig.json
 
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
