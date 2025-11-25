@@ -29,7 +29,7 @@ export const setupSwagger = (
       },
     });
   if (serverUrls) {
-    serverUrls.forEach((url) => configBuilder.addServer(url));
+    serverUrls.forEach(url => configBuilder.addServer(url));
   }
   const config = configBuilder.build();
 
