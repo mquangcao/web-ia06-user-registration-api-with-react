@@ -43,4 +43,4 @@ USER nestjs
 
 WORKDIR /app/apps/api
 
-CMD ["node", "dist/src/main.js"]
+CMD ["node", "dist/main.js"]
