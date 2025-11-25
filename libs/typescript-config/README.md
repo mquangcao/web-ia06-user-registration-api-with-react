@@ -24,16 +24,16 @@ Configuration for NestJS applications.
 
 Configuration for React applications with Vite.
 
-- Target: ES2020
+- Target: ES2022
 - Module: ESNext
 - JSX: react-jsx
 - Strict mode enabled
 
-### `library.json`
+### `nest-library.json`
 
 Configuration for shared library packages.
 
-- Extends `base.json`
+- Extends `nest.json`
 - Enables composite projects
 - Generates declarations and source maps
 
