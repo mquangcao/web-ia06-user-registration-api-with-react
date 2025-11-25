@@ -16,12 +16,14 @@
   },
   "scripts": {
     "build:clean": "rimraf dist && pnpm build",
-    "build": "npx tsc -p tsconfig.json"
+    "build": "npx tsc -p tsconfig.json",
+    "lint:fix": "eslint src --report-unused-disable-directives --max-warnings 0 --fix"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@app/eslint-config": "^1.0.0",
     "@app/typescript-config": "^1.0.0",
     "typescript": "^5.9.3"
   },

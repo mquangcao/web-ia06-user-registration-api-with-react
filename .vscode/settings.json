@@ -1,14 +1,23 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "liveServer.settings.root": "/apps/web/dist",
+  "eslint.enable": true,
+  "eslint.useFlatConfig": true,
   "eslint.codeActionsOnSave.mode": "problems",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "eslint.format.enable": true,
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
   "editor.formatOnSaveMode": "file",
   "eslint.validate": [
     "javascript",
+    "javascriptreact",
     "typescript",
+    "typescriptreact",
     "markdown",
     "json",
     "jsonc",
