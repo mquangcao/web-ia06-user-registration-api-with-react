@@ -1,4 +1,5 @@
 import { INestApplication, Logger } from '@nestjs/common';
+
 import { setupSwagger } from '../../docs';
 import { getConfig } from '../config';
 
@@ -19,13 +20,13 @@ export async function setupBootstrap(
 ) {
   const logger = new Logger('Bootstrap');
   app.enableShutdownHooks();
+
   app.enableCors();
 
   const timeZone = getConfig('core.defaultTimeZone') || 'Asia/Bangkok';
   process.env.TZ = timeZone;
 
   const d = new Date().toTimeString();
-
   logger.verbose(`Current UTC Timezone: ${timeZone}: ${d}`);
 
   const appName = getConfig<string>('appName');

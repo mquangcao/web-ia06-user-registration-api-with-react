@@ -5,7 +5,8 @@
   "scripts": {
     "build:clean": "rimraf dist && pnpm build",
     "build": "npx tsc -p tsconfig.json",
-    "lint:fix": "eslint src --report-unused-disable-directives --max-warnings 0 --fix"
+    "lint:fix": "eslint src --report-unused-disable-directives --max-warnings 0 --fix",
+    "format:fix": "prettier --write \"src/**/*.ts\""
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@app/eslint-config": "^1.0.0",
+    "@app/prettier-config": "^1.0.0",
     "@app/typescript-config": "^1.0.0",
     "@types/config": "^3.3.5",
     "typescript": "^5.9.3"

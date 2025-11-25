@@ -53,8 +53,11 @@ module.exports = [
       // TS recommended
       ...tseslint.configs.recommended.rules,
 
-      // Prettier
+      // Prettier - let it handle all formatting including imports
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
+      
+      // Disable any import ordering rules that might conflict with Prettier
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
   },
 
@@ -104,11 +107,11 @@ module.exports = [
     },
   },
 
-  // --- Ignore patterns ---
-  {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**'],
-  },
-
-  // --- Disable conflicting rules ---
+  // Prettier config to disable conflicting rules
   prettierConfig,
+
+  // Ignore patterns
+  {
+    ignores: ['eslint.config.js', '.eslintrc.js', 'dist/**', 'node_modules/**', 'coverage/**'],
+  },
 ];

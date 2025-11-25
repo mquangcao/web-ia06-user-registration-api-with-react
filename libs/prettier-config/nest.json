@@ -10,8 +10,13 @@
   "quoteProps": "as-needed",
   "useTabs": false,
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrderParserPlugins": ["typescript", "classProperties", "decorators-legacy", "jsx"],
-  "importOrder": ["^[react]", "^@(?!/)", "^@/", "^[./]"],
+  "importOrderParserPlugins": [
+    "typescript",
+    "classProperties",
+    "decorators-legacy",
+    "jsx"
+  ],
+  "importOrder": ["^@(nestjs|app)/", "^[a-zA-Z]", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

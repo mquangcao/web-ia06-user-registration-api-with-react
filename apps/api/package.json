@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@app/eslint-config": "^1.0.0",
+    "@app/prettier-config": "^1.0.0",
     "@app/typescript-config": "^1.0.0",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
