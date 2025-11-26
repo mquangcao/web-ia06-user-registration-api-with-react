@@ -37,8 +37,7 @@ module.exports = [
     languageOptions: {
       parser: tsparser,
       parserOptions: {
-        project: './tsconfig.json',
-        tsconfigRootDir: process.cwd(),
+        project: true,
         sourceType: 'module',
       },
       globals: {
@@ -67,8 +66,7 @@ module.exports = [
     languageOptions: {
       parser: tsparser,
       parserOptions: {
-        project: './tsconfig.json',
-        tsconfigRootDir: process.cwd(),
+        project: true,
       },
       globals: {
         ...globals.node,
@@ -89,8 +87,7 @@ module.exports = [
     languageOptions: {
       parser: tsparser,
       parserOptions: {
-        project: './tsconfig.json',
-        tsconfigRootDir: process.cwd(),
+        project: true,
       },
       globals: {
         ...globals.node,
