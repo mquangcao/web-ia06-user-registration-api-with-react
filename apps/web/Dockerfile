@@ -22,6 +22,7 @@ COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/package-lock.json ./package-lock.json
 RUN npm install --include=optional
+RUN npm install @rollup/rollup-linux-x64-musl --no-save
 
 # Build the project
 COPY --from=builder /app/out/full/ .
