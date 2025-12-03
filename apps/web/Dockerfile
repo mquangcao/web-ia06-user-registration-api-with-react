@@ -21,9 +21,7 @@ WORKDIR /app
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/package-lock.json ./package-lock.json
-RUN npm install --include=optional
-RUN npm install @rollup/rollup-linux-x64-musl --no-save
-RUN npm install lightningcss-linux-x64-musl --no-save
+RUN npm ci --include=optional
 
 # Build the project
 COPY --from=builder /app/out/full/ .
