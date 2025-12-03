@@ -20,8 +20,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@app/common": "1.0.0",
-    "@app/core": "1.0.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
@@ -30,9 +28,6 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@app/eslint-config": "^1.0.0",
-    "@app/prettier-config": "^1.0.0",
-    "@app/typescript-config": "^1.0.0",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@nestjs/cli": "^11.0.0",

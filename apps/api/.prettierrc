@@ -16,7 +16,7 @@
     "decorators-legacy",
     "jsx"
   ],
-  "importOrder": ["^@(nestjs|app)/", "^[a-zA-Z]", "^[./]"],
+  "importOrder": ["^[react]", "^@(?!/)", "^@/", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

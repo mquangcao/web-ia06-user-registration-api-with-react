@@ -1,4 +1,3 @@
-import { setupBootstrap } from '@app/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
@@ -14,6 +13,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await setupBootstrap(app);
+  await app.listen(3000);
 }
 bootstrap();
