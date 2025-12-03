@@ -21,11 +21,15 @@ WORKDIR /app
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/package-lock.json ./package-lock.json
-RUN npm ci --include=optional
+RUN npm install
 
 # Build the project
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
+
+# Install platform-specific native modules
+RUN cd /app/node_modules/rollup && npm install @rollup/rollup-linux-x64-musl --no-save || true
+RUN cd /app/node_modules/lightningcss && npm install lightningcss-linux-x64-musl --no-save || true
 
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
