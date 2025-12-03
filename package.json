@@ -6,7 +6,6 @@
     "dev": "turbo run dev",
     "lint:fix": "turbo run lint:fix",
     "check-types": "turbo run check-types",
-    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.1.0",
