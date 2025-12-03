@@ -27,9 +27,12 @@ RUN npm install
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-# Install platform-specific native modules
-RUN cd /app/node_modules/rollup && npm install @rollup/rollup-linux-x64-musl --no-save || true
-RUN cd /app/node_modules/lightningcss && npm install lightningcss-linux-x64-musl --no-save || true
+# Install all platform-specific native modules for Alpine Linux (musl)
+RUN npm install --no-save \
+    @rollup/rollup-linux-x64-musl \
+    lightningcss-linux-x64-musl \
+    @tailwindcss/oxide-linux-x64-musl \
+    || true
 
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
