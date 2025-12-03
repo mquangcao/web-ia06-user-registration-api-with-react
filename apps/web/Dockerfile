@@ -21,14 +21,11 @@ WORKDIR /app
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/package-lock.json ./package-lock.json
-RUN npm install --legacy-peer-deps --ignore-scripts
+RUN npm install --legacy-peer-deps
 
 # Build the project
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-
-RUN npm install --legacy-peer-deps --ignore-scripts
-RUN npm rebuild @rollup/rollup-linux-x64-musl
 
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
