@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: turborepo-backend
+    name: ia06-user-registration-api
     runtime: docker
     repo: https://github.com/mquangcao/web-ia06-user-registration-api-with-react
     buildFilter:
@@ -9,15 +9,9 @@ services:
     plan: free
     dockerContext: .
     dockerfilePath: ./apps/api/Dockerfile
-    envVars:
-      - key: ALLOW_ORIGIN_URL
-        fromService:
-          name: turborepo-frontend
-          type: web
-          property: url
 
   - type: web
-    name: turborepo-frontend
+    name: ia06-user-registration-frontend
     runtime: docker
     repo: https://github.com/mquangcao/web-ia06-user-registration-api-with-react
     buildFilter:
@@ -26,10 +20,4 @@ services:
     plan: free
     dockerContext: .
     dockerfilePath: ./apps/web/Dockerfile
-    envVars:
-      - key: VITE_API_BASE_URL
-        fromService:
-          name: turborepo-backend
-          type: web
-          property: url
 version: '1'
