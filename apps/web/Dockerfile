@@ -27,6 +27,9 @@ RUN npm install --legacy-peer-deps --ignore-scripts
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
+RUN npm install --legacy-peer-deps --ignore-scripts
+RUN npm rebuild @rollup/rollup-linux-x64-musl
+
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
 # ENV TURBO_TEAM=$TURBO_TEAM
